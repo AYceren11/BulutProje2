@@ -1,54 +1,54 @@
-AWS IoT & MQTT Real-Time System Monitor 
+Proje 2: AWS IoT Core ve MQTT ile Gerçek Zamanlı Sistem İzleme
+Bu proje, Ankara Üniversitesi Bilgisayar Mühendisliği bünyesinde verilen Bulut Bilişim ve Uygulamaları (BLM3522) dersi kapsamında geliştirilmiştir. Uygulama, yerel bir cihazın sistem kaynaklarını (CPU ve RAM) anlık olarak izleyen ve MQTT protokolü üzerinden AWS Bulut ekosistemine güvenli bir şekilde aktaran uçtan uca bir IoT çözümüdür.
 
-![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
-![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white)
-![Git](https://img.shields.io/badge/git-%23F05032.svg?style=for-the-badge&logo=git&logoColor=white)
+👤 Öğrenci Bilgileri
+Ad Soyad: Ayşe Ceren Şenel
 
-Bu proje, yerel bir cihazın sistem kaynaklarını (CPU/RAM) gerçek zamanlı olarak izleyen ve MQTT protokolü üzerinden AWS Bulut ekosistemine aktaran bir uçtan uca IoT çözümüdür.
+Öğrenci Numarası: 23290973
 
----
+Bölüm: Bilgisayar Mühendisliği
 
-Projenin Amacı
-Ankara Üniversitesi Bilgisayar Mühendisliği, Bulut Bilişim dersi kapsamında geliştirilen bu çalışma; verilerin sensörlerden (bu projede sistem kaynakları) buluta güvenli iletimini, bulut üzerinde işlenmesini ve NoSQL veritabanında depolanmasını uygulamalı olarak göstermektedir.
+Ders: Bulut Bilişim ve Uygulamaları (BLM3522)
 
-Sistem Mimarisi
-Proje akışı şu şekildedir:
-1. Veri Toplama: psutil ile yerel cihazdan telemetri verilerinin okunması.
-2. Güvenli Bağlantı: X.509 sertifikaları ile TLS/SSL üzerinden AWS IoT Core bağlantısı.
-3. Mesajlaşma: MQTT protokolü ile sdk/test/python konusuna (topic) yayın yapılması.
-4. Kural Motoru (Rule Engine): Gelen verilerin AWS IoT üzerinden SQL sorgusuyla yakalanması.
-5. Depolama: Yakalanan verilerin anlık olarak **Amazon DynamoDB** (SystemMetrics tablosu) içine yazılması.
+🚀 Proje Sunumu
+GİTHUB Repo: https://github.com/AYceren11/BulutProje2.git
 
-Teknik Stack
-Katman                    Teknoloji 
-Programlama               Python 3.x 
-Mesajlaşma Protokolü      MQTT (Message Queuing Telemetry Transport) 
-Bulut Sağlayıcı           Amazon Web Services (AWS) 
-IoT Servisi               AWS IoT Core 
-Veritabanı                Amazon DynamoDB (NoSQL) 
-Güvenlik                  AWS IoT Policies & X.509 Certificates 
+Proje Tanıtım Videosu: [Buraya YouTube video linkiiiiiiiiiiiiAAAAAAAAAAAAAAAAAAAAA]
 
-Kurulum ve Kullanım
+🛠 Kullanılan Teknolojiler
+Programlama: Python 3.11+
 
-1. Hazırlık
-Önce projenin bağımlılıklarını kurun:
+IoT Protokolü: MQTT (Message Queuing Telemetry Transport)
 
-pip install AWSIoTPythonSDK psutil
+Bulut Platformu: AWS IoT Core
 
-2. Sertifikalar
+Veritabanı: Amazon DynamoDB (NoSQL)
 
-certs/ klasörü altına AWS'den aldığınız sertifikaları ekleyin. (Güvenlik nedeniyle bu dosyalar GitHub'a yüklenmemiştir).
+Güvenlik: X.509 Sertifikaları & TLS 1.2
 
-3. Çalıştırma
+Versiyon Kontrol: Git & GitHub
 
-python main.py
-Veri Örneği (Payload)
-AWS'ye iletilen mesajın yapısı:
+🏗 Sistem Mimarisi
+Uygulama, verinin yerel cihazdan buluta yolculuğunu kapsayan dört ana katmandan oluşur:
 
-{
-  "device_id": "Laptop_Sensor",
-  "timestamp": 1712345678,
-  "cpu_usage": 12.5,
-  "ram_usage": 74.2
-}
-Hazırlayan: Ayşe Ceren Şenel
+Veri Toplama: Python psutil kütüphanesi ile cihazdan telemetri verilerinin (CPU/RAM) okunması.
+
+Haberleşme: AWS tarafından sağlanan sertifikalarla şifrelenmiş MQTT bağlantısı üzerinden verilerin iletilmesi.
+
+Kural Motoru (Rule Engine): IoT Core üzerinde çalışan SQL tabanlı bir kural ile gelen verilerin yakalanması.
+
+Kalıcı Depolama: Yakalanan verilerin anlık olarak DynamoDB SystemMetrics tablosuna kaydedilmesi.
+
+🛡 Güvenlik ve İzolasyon
+Sertifika Yönetimi: Cihaz doğrulaması için AWS IoT Core tarafından üretilen Private Key ve Device Certificate dosyaları kullanılmıştır.
+
+Gizlilik: Güvenlik protokolleri gereği certs/ klasörü ve sanal ortam dosyaları (venv/) .gitignore dosyası ile GitHub takibinden hariç tutulmuştur.
+
+📂 Proje Yapısı
+/certs: AWS IoT bağlantı sertifikaları (Güvenlik nedeniyle gizli).
+
+main.py: Sistem verilerini toplayan ve MQTT üzerinden yayınlayan ana Python betiği.
+
+README.md: Proje dökümantasyonu.
+
+Projenin Raporu -> [Proje 2.pdf](https://github.com/user-attachments/files/26874753/Proje.2.pdf)
