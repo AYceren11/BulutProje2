@@ -1,38 +1,35 @@
 import time
 import json
-import psutil # Sistem verilerini (CPU/RAM) okumak için
+import psutil
 from AWSIoTPythonSDK.MQTTLib import AWSIoTMQTTClient
 
-
+# --- YAPILANDIRMA ---
 ENDPOINT = "a37b0n2j0e4tm9-ats.iot.eu-north-1.amazonaws.com" 
 CLIENT_ID = "Laptop_Sensor"
 
-print("1. Dosya yolları kontrol ediliyor...")
-# Bu isimlerin klasördekiyle birebir aynı olduğundan emin ol (uzantılar dahil!)
-# Terminal çıktısındaki gerçek isimleri buraya yazdık
+# Sertifika Dosya Yolları
 PATH_TO_CERT = "certs/cert.crt.crt"
 PATH_TO_KEY = "certs/private.key.key"
 PATH_TO_ROOT = "certs/root.pem"
-print("2. Bağlantı yapılandırılıyor...")
+
+# --- MQTT MÜŞTERİ KURULUMU ---
 myClient = AWSIoTMQTTClient(CLIENT_ID)
 myClient.configureEndpoint(ENDPOINT, 8883)
 myClient.configureCredentials(PATH_TO_ROOT, PATH_TO_KEY, PATH_TO_CERT)
 
-print("3. AWS IoT Core'a bağlanmaya çalışılıyor (Burada bekliyorsa sertifika veya internet hatasıdır)...")
-myClient.connect()
-print("4. Bağlantı BAŞARILI!")
-# --- MQTT BAĞLANTISI ---
-myClient = AWSIoTMQTTClient(CLIENT_ID)
-myClient.configureEndpoint(ENDPOINT, 8883)
-myClient.configureCredentials(PATH_TO_ROOT, PATH_TO_KEY, PATH_TO_CERT)
+# Bağlantı Ayarları 
+myClient.configureAutoReconnectBackoffTime(1, 32, 20)
+myClient.configureConnectDisconnectTimeout(10)
+myClient.configureMQTTOperationTimeout(5)
 
-print("Buluta bağlanılıyor...")
-myClient.connect()
-print("Bağlantı başarılı! Gerçek zamanlı veri akışı başladı...")
-
+# --- BAĞLANTI VE VERİ AKIŞI ---
+print("AWS IoT Core'a bağlanılıyor...")
 try:
+    myClient.connect()
+    print("Bağlantı başarılı! Gerçek zamanlı veri akışı başladı...")
+
     while True:
-       
+        # Telemetri verisini oluştur
         payload = {
             "device_id": CLIENT_ID,
             "timestamp": int(time.time()),
@@ -40,11 +37,15 @@ try:
             "ram_usage": psutil.virtual_memory().percent
         }
         
-       
+        # Veriyi yayınla
         myClient.publish("sdk/test/python", json.dumps(payload), 1)
         print(f"Gönderilen Veri: {payload}")
         
-        time.sleep(5)
+        time.sleep(5)  # 5 saniyelik periyotlarla gönderim
+
+except Exception as e:
+    print(f"Bağlantı sırasında bir hata oluştu: {e}")
+
 except KeyboardInterrupt:
     myClient.disconnect()
-    print("Bağlantı kesildi.")
+    print("\nBağlantı kullanıcı tarafından kesildi.")
