@@ -13,7 +13,7 @@ Ders: Bulut Bilişim ve Uygulamaları (BLM3522)
 🚀 Proje Sunumu
 GİTHUB Repo: https://github.com/AYceren11/BulutProje2.git
 
-Proje Tanıtım Videosu: [Buraya YouTube video linkiiiiiiiiiiiiAAAAAAAAAAAAAAAAAAAAA]
+Proje Tanıtım Videosu: [[Youtube Linki]](https://youtu.be/2GqCtGSI_Xw)
 
 🛠 Kullanılan Teknolojiler
 Programlama: Python 3.11+
